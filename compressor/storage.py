@@ -75,3 +75,9 @@ class DefaultStorage(LazyObject):
         self._wrapped = get_storage_class(settings.COMPRESS_STORAGE)()
 
 default_storage = DefaultStorage()
+
+class ManifestStorage(LazyObject):
+    def _setup(self):
+        self._wrapped = get_storage_class(settings.COMPRESS_MANIFEST_STORAGE)()
+
+manifest_storage = ManifestStorage()

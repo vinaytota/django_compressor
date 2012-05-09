@@ -11,7 +11,7 @@ from django.utils.hashcompat import md5_constructor
 from django.utils.importlib import import_module
 
 from compressor.conf import settings
-from compressor.storage import default_storage
+from compressor.storage import manifest_storage
 from compressor.utils import get_mod_func
 
 _cachekey_func = None
@@ -68,8 +68,8 @@ def get_offline_manifest():
     global _offline_manifest
     if _offline_manifest is None:
         filename = get_offline_manifest_filename()
-        if default_storage.exists(filename):
-            _offline_manifest = simplejson.load(default_storage.open(filename))
+        if manifest_storage.exists(filename):
+            _offline_manifest = simplejson.load(manifest_storage.open(filename))
         else:
             _offline_manifest = {}
     return _offline_manifest
@@ -82,7 +82,7 @@ def flush_offline_manifest():
 
 def write_offline_manifest(manifest):
     filename = get_offline_manifest_filename()
-    default_storage.save(filename,
+    manifest_storage.save(filename,
                          ContentFile(simplejson.dumps(manifest, indent=2)))
     flush_offline_manifest()
 
